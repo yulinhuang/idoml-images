@@ -19,7 +19,7 @@ env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
   # github.repository as <account>/<repo>
-  IMAGE_NAME: ${{ github.repository }}
+  ORG: ${{ github.repository_owner }}
 
 
 jobs:
@@ -71,7 +71,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@96383f45573cb7f253c731d3b3ab81c87ef81934 # v5.0.0
         with:
-          images: ${{ env.REGISTRY }}/idoml-${{ matrix.image-name }}
+          images: ${{ env.REGISTRY }}/${{ env.ORG }}/idoml-${{ matrix.image-name }}
           tags: ${{ matrix.python-version }}
 
       # Build and push Docker image with Buildx (don't push on PR)
@@ -151,7 +151,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@96383f45573cb7f253c731d3b3ab81c87ef81934 # v5.0.0
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-${{ matrix.image-name }}
+          images: ${{ env.REGISTRY }}/${{ env.ORG }}/idoml-${{ matrix.image-name }}
           tags: ${{ matrix.python-version }}
 
       # Build and push Docker image with Buildx (don't push on PR)
