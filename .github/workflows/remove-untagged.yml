@@ -1,0 +1,26 @@
+name: Cleanup Untagged Images
+
+on:
+  # every sunday at 02:00
+  schedule:
+    - cron: '0 2 * * 0'
+  # or manually
+  workflow_dispatch:
+
+jobs:
+  delete-untagged-images:
+    name: Delete Untagged Images
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      # This is used to complete the identity challenge
+      # with sigstore/fulcio when running outside of PRs.
+      id-token: write
+    steps:
+      - uses: actions/delete-package-versions@v5
+        with: 
+          package-name: 'idoml-python'
+          package-type: 'container'
+          min-versions-to-keep: 2
+          delete-only-untagged-versions: 'true'
