@@ -22,5 +22,5 @@ jobs:
         with: 
           package-name: 'idoml-python'
           package-type: 'container'
-          min-versions-to-keep: 2
-          delete-only-untagged-versions: 'true'
+          min-versions-to-keep: 0
+          ignore-versions: '3\.\d+'
