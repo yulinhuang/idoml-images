@@ -7,6 +7,12 @@ on:
   # or manually
   workflow_dispatch:
 
+env:
+  # Use docker.io for Docker Hub if empty
+  REGISTRY: ghcr.io
+  # github.repository as <account>/<repo>
+  ORG: ${{ github.repository_owner }}
+
 jobs:
   delete-untagged-images:
     name: Delete Untagged Images
@@ -19,13 +25,29 @@ jobs:
       id-token: write
     
     steps:
-      - uses: actions/delete-package-versions@v5
-        with: 
-          package-name: 'idoml-python'
-          package-type: 'container'
-          ignore-versions: '3\\.\\d+'
-      - uses: actions/delete-package-versions@v5
-        with: 
-          package-name: 'idoml-python'
-          package-type: 'container'
-          ignore-versions: '3\\.\\d+'
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install cosign
+        uses: sigstore/cosign-installer@59acb6260d9c0ba8f4a2f9d9b48431a222b68e20 #v3.5.0
+        with:
+          cosign-release: 'v2.2.4'
+      
+      - name: Log into registry ${{ env.REGISTRY }}
+        uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3.0.0
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: List old images and signatures
+        run: |
+          docker images ghcr.io/${{ github.repository }} --format "{{.Repository}}:{{.Tag}} {{.ID}} {{.CreatedAt}}" | tail -n 3 # Adjust N to skip the latest N images
+
+      - name: Remove old images and signatures
+        run: |
+          old_images=$(docker images ghcr.io/${{ github.repository }} --format "{{.Repository}}:{{.Tag}}" | tail -n 3) # Adjust N to skip the latest N images
+          for image in $old_images; do
+            docker rmi $image
+            cosign remove $image # Adjust this command if necessary
+          done
