@@ -42,11 +42,11 @@ jobs:
 
       - name: List old images and signatures
         run: |
-          docker images ghcr.io/idoml-python --format "{{.Repository}}:{{.Tag}} {{.ID}} {{.CreatedAt}}" | tail -n 3 # Adjust N to skip the latest N images
+          docker images ghcr.io/idoml-python --format "{{.Repository}}:{{.Tag}} {{.ID}} {{.CreatedAt}}" | tail -n +3 # Adjust N to skip the latest N images
 
       - name: Remove old images and signatures
         run: |
-          old_images=$(docker images ghcr.io/idoml-python --format "{{.Repository}}:{{.Tag}}" | tail -n 3) # Adjust N to skip the latest N images
+          old_images=$(docker images ghcr.io/idoml-python --format "{{.Repository}}:{{.Tag}}" | tail -n +3) # Adjust N to skip the latest N images
           for image in $old_images; do
             docker rmi $image
             cosign remove $image # Adjust this command if necessary
