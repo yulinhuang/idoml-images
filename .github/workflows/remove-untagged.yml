@@ -22,4 +22,4 @@ jobs:
         with: 
           package-name: 'idoml-python'
           package-type: 'container'
-          ignore-versions: '3\.\d+'
+          ignore-versions: '3\\.\\d+'
