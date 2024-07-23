@@ -1,4 +1,4 @@
-name: Docker
+name: Build IDOML Docker Images
 
 # This workflow uses actions that are not certified by GitHub.
 # They are provided by a third-party and are governed by
@@ -8,8 +8,8 @@ name: Docker
 on:
   schedule:
     - cron: '0 1 * * 0'
-  # push:
-  #   branches: [ "main" ]
+  push:
+    branches: [ "main" ]
   #   Publish semver tags as releases.
   #   tags: [ 'v*.*.*' ]
   pull_request:
