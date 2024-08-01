@@ -7,21 +7,21 @@ pandas
 numpy
 
 # These are the dependencies for the Elyra
-ipykernel
-ipython
-ipython-genutils
-jinja2
-jupyter-client
-jupyter-core
-MarkupSafe
-minio
-nbclient
-nbconvert
-nbformat
-papermill
-pyzmq
-prompt-toolkit
-requests
-tornado
-traitlets
-urllib3
+# ipykernel
+# ipython
+# ipython-genutils
+# jinja2
+# jupyter-client
+# jupyter-core
+# MarkupSafe
+# minio
+# nbclient
+# nbconvert
+# nbformat
+# papermill
+# pyzmq
+# prompt-toolkit
+# requests
+# tornado
+# traitlets
+# urllib3
